@@ -10,7 +10,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/ErikBavenstrand/Advent-of-Code">
-    <img src="images/68747470733a2f2f7062732e7477696d672e636f6d2f6d656469612f45467332316d30585941496a7134543f666f726d61743d6a7067266e616d653d6c61726765" alt="Logo">
+    <img src="images/AoC.jpg" alt="Logo">
   </a>
 
 <hr/>
