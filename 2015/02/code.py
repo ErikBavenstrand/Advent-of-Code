@@ -31,8 +31,13 @@ else:
 # ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝        ╚═╝                                   #
 ###############################################################################
 
+total_length = 0
+for present in data:
+    dims = sorted([int(d) for d in present.split("x")])
+    total_length += (3 * dims[0] * dims[1]) + \
+        (2 * dims[1] * dims[2]) + (2 * dims[0] * dims[2])
 
-answer_a = None
+answer_a = total_length
 print("Part a: " + str(answer_a))
 if args.submit and not args.testcase and answer_a:
     submit(answer=answer_a, part="a", day=2, year=2015)
@@ -45,8 +50,13 @@ if args.submit and not args.testcase and answer_a:
 # ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝       ╚══════╝                               #
 ###############################################################################
 
+total_length = 0
+for present in data:
+    dims = sorted([int(d) for d in present.split("x")])
+    total_length += (2 * dims[0]) + (2 * dims[1]) + \
+        (dims[0] * dims[1] * dims[2])
 
-answer_b = None
+answer_b = total_length
 print("Part b: " + str(answer_b))
 if args.submit and not args.testcase and answer_b:
     submit(answer=answer_b, part="b", day=2, year=2015)

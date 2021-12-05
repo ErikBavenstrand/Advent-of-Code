@@ -31,8 +31,22 @@ else:
 # ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝        ╚═╝                                   #
 ###############################################################################
 
+houses = dict()
+curr_x = 0
+curr_y = 0
+houses[f"{curr_x}, {curr_y}"] = 1
+for inst in list(data[0]):
+    if inst == "<":
+        curr_x -= 1
+    elif inst == ">":
+        curr_x += 1
+    elif inst == "^":
+        curr_y += 1
+    elif inst == "v":
+        curr_y -= 1
+    houses[f"{curr_x}, {curr_y}"] = 1
 
-answer_a = None
+answer_a = len(houses.items())
 print("Part a: " + str(answer_a))
 if args.submit and not args.testcase and answer_a:
     submit(answer=answer_a, part="a", day=3, year=2015)
@@ -45,8 +59,41 @@ if args.submit and not args.testcase and answer_a:
 # ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝       ╚══════╝                               #
 ###############################################################################
 
+houses = dict()
+santa_x = 0
+santa_y = 0
 
-answer_b = None
+robo_x = 0
+robo_y = 0
+
+houses[f"{santa_x}, {santa_y}"] = 1
+is_robo_santa = False
+for inst in list(data[0]):
+    if is_robo_santa:
+        if inst == "<":
+            robo_x -= 1
+        elif inst == ">":
+            robo_x += 1
+        elif inst == "^":
+            robo_y += 1
+        elif inst == "v":
+            robo_y -= 1
+        houses[f"{robo_x}, {robo_y}"] = 1
+
+    else:
+        if inst == "<":
+            santa_x -= 1
+        elif inst == ">":
+            santa_x += 1
+        elif inst == "^":
+            santa_y += 1
+        elif inst == "v":
+            santa_y -= 1
+        houses[f"{santa_x}, {santa_y}"] = 1
+
+    is_robo_santa = not is_robo_santa
+
+answer_b = len(houses.items())
 print("Part b: " + str(answer_b))
 if args.submit and not args.testcase and answer_b:
     submit(answer=answer_b, part="b", day=3, year=2015)

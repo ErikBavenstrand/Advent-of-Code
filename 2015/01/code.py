@@ -31,8 +31,16 @@ else:
 # ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝        ╚═╝                                   #
 ###############################################################################
 
+data_a = list(data[0])
+floor = 0
+for (i, d) in enumerate(data_a):
+    if d == "(":
+        floor += 1
+    elif d == ")":
+        floor -= 1
 
-answer_a = None
+
+answer_a = floor
 print("Part a: " + str(answer_a))
 if args.submit and not args.testcase and answer_a:
     submit(answer=answer_a, part="a", day=1, year=2015)
@@ -45,8 +53,18 @@ if args.submit and not args.testcase and answer_a:
 # ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝       ╚══════╝                               #
 ###############################################################################
 
+data_b = list(data[0])
+floor = 0
+first_basement = None
+for (i, d) in enumerate(data_b):
+    if d == "(":
+        floor += 1
+    elif d == ")":
+        floor -= 1
+    if first_basement is None and floor == -1:
+        first_basement = i + 1
 
-answer_b = None
+answer_b = first_basement
 print("Part b: " + str(answer_b))
 if args.submit and not args.testcase and answer_b:
     submit(answer=answer_b, part="b", day=1, year=2015)
