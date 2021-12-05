@@ -39,9 +39,9 @@ for y in years:
 
         if not os.path.exists(os.path.join(day_path, "code.py")):
             with open(os.path.join(day_path, "code.py"), "w+") as f:
-                f.write(f"""# Advent of Code {str(y)} Day {str(d)}
+                f.write(f"""# Advent of Code {str(y)} Day {str(int(d))}
 # Author: {AUTHOR}
-# URL: https://adventofcode.com/{str(y)}/day/{str(d)}
+# URL: https://adventofcode.com/{str(y)}/day/{str(int(d))}
 
 import argparse
 import os.path
@@ -61,7 +61,7 @@ if args.testcase:
                             "testcase.txt")), "r") as f:
         data = f.read().splitlines()
 else:
-    data = get_data(day={str(d)}, year={str(y)}).splitlines()
+    data = get_data(day={str(int(d))}, year={str(y)}).splitlines()
 
 ###############################################################################
 # ██████╗  █████╗ ██████╗ ████████╗     ██╗                                   #
@@ -76,7 +76,7 @@ else:
 answer_a = None
 print("Part a: " + str(answer_a))
 if args.submit and not args.testcase and answer_a:
-    submit(answer=answer_a, part="a", day={str(d)}, year={str(y)})
+    submit(answer=answer_a, part="a", day={str(int(d))}, year={str(y)})
 ###############################################################################
 # ██████╗  █████╗ ██████╗ ████████╗    ██████╗                                #
 # ██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝    ╚════██╗                               #
@@ -90,7 +90,7 @@ if args.submit and not args.testcase and answer_a:
 answer_b = None
 print("Part b: " + str(answer_b))
 if args.submit and not args.testcase and answer_b:
-    submit(answer=answer_b, part="b", day={str(d)}, year={str(y)})
+    submit(answer=answer_b, part="b", day={str(int(d))}, year={str(y)})
 """)
 
         if not os.path.exists(os.path.join(day_path, "testcase.txt")):

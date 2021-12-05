@@ -1,6 +1,6 @@
-# Advent of Code 2020 Day 02
+# Advent of Code 2020 Day 2
 # Author: Erik Båvenstrand
-# URL: https://adventofcode.com/2020/day/02
+# URL: https://adventofcode.com/2020/day/2
 
 import argparse
 import os.path
@@ -20,7 +20,7 @@ if args.testcase:
                             "testcase.txt")), "r") as f:
         data = f.read().splitlines()
 else:
-    data = get_data(day=02, year=2020).splitlines()
+    data = get_data(day=2, year=2020).splitlines()
 
 ###############################################################################
 # ██████╗  █████╗ ██████╗ ████████╗     ██╗                                   #
@@ -35,7 +35,7 @@ else:
 answer_a = None
 print("Part a: " + str(answer_a))
 if args.submit and not args.testcase and answer_a:
-    submit(answer=answer_a, part="a", day=02, year=2020)
+    submit(answer=answer_a, part="a", day=2, year=2020)
 ###############################################################################
 # ██████╗  █████╗ ██████╗ ████████╗    ██████╗                                #
 # ██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝    ╚════██╗                               #
@@ -49,4 +49,4 @@ if args.submit and not args.testcase and answer_a:
 answer_b = None
 print("Part b: " + str(answer_b))
 if args.submit and not args.testcase and answer_b:
-    submit(answer=answer_b, part="b", day=02, year=2020)
+    submit(answer=answer_b, part="b", day=2, year=2020)

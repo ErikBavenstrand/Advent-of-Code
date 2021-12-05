@@ -1,6 +1,6 @@
-# Advent of Code 2016 Day 04
+# Advent of Code 2016 Day 4
 # Author: Erik Båvenstrand
-# URL: https://adventofcode.com/2016/day/04
+# URL: https://adventofcode.com/2016/day/4
 
 import argparse
 import os.path
@@ -20,7 +20,7 @@ if args.testcase:
                             "testcase.txt")), "r") as f:
         data = f.read().splitlines()
 else:
-    data = get_data(day=04, year=2016).splitlines()
+    data = get_data(day=4, year=2016).splitlines()
 
 ###############################################################################
 # ██████╗  █████╗ ██████╗ ████████╗     ██╗                                   #
@@ -35,7 +35,7 @@ else:
 answer_a = None
 print("Part a: " + str(answer_a))
 if args.submit and not args.testcase and answer_a:
-    submit(answer=answer_a, part="a", day=04, year=2016)
+    submit(answer=answer_a, part="a", day=4, year=2016)
 ###############################################################################
 # ██████╗  █████╗ ██████╗ ████████╗    ██████╗                                #
 # ██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝    ╚════██╗                               #
@@ -49,4 +49,4 @@ if args.submit and not args.testcase and answer_a:
 answer_b = None
 print("Part b: " + str(answer_b))
 if args.submit and not args.testcase and answer_b:
-    submit(answer=answer_b, part="b", day=04, year=2016)
+    submit(answer=answer_b, part="b", day=4, year=2016)
