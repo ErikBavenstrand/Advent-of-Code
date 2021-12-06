@@ -3,7 +3,9 @@
 # URL: https://adventofcode.com/2015/day/4
 
 import argparse
+import hashlib
 import os.path
+import random
 
 from aocd import get_data, submit
 
@@ -31,8 +33,13 @@ else:
 # ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝        ╚═╝                                   #
 ###############################################################################
 
+while True:
+    trial_int = random.randint(0, 999999)
+    md5 = hashlib.md5((data[0] + str(trial_int)).encode()).hexdigest()
+    if md5[:5] == "00000":
+        break
 
-answer_a = None
+answer_a = trial_int
 print("Part a: " + str(answer_a))
 if args.submit and not args.testcase and answer_a:
     submit(answer=answer_a, part="a", day=4, year=2015)
@@ -46,7 +53,13 @@ if args.submit and not args.testcase and answer_a:
 ###############################################################################
 
 
-answer_b = None
+while True:
+    trial_int = random.randint(0, 9999999)
+    md5 = hashlib.md5((data[0] + str(trial_int)).encode()).hexdigest()
+    if md5[:6] == "000000":
+        break
+
+answer_b = trial_int
 print("Part b: " + str(answer_b))
 if args.submit and not args.testcase and answer_b:
     submit(answer=answer_b, part="b", day=4, year=2015)

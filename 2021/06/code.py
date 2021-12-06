@@ -31,8 +31,27 @@ else:
 # ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝        ╚═╝                                   #
 ###############################################################################
 
+data_a = data[0].split(",")
 
-answer_a = None
+n_fish = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+t_n_fish = n_fish.copy()
+for fish in data_a:
+    n_fish[int(fish)] += 1
+
+for day in range(80):
+    t_n_fish[0] = n_fish[1]
+    t_n_fish[1] = n_fish[2]
+    t_n_fish[2] = n_fish[3]
+    t_n_fish[3] = n_fish[4]
+    t_n_fish[4] = n_fish[5]
+    t_n_fish[5] = n_fish[6]
+    t_n_fish[6] = n_fish[7] + n_fish[0]
+    t_n_fish[7] = n_fish[8]
+    t_n_fish[8] = n_fish[0]
+
+    n_fish = t_n_fish.copy()
+
+answer_a = sum(n_fish)
 print("Part a: " + str(answer_a))
 if args.submit and not args.testcase and answer_a:
     submit(answer=answer_a, part="a", day=6, year=2021)
@@ -45,8 +64,27 @@ if args.submit and not args.testcase and answer_a:
 # ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝       ╚══════╝                               #
 ###############################################################################
 
+data_b = data[0].split(",")
 
-answer_b = None
+n_fish = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+t_n_fish = n_fish.copy()
+for fish in data_b:
+    n_fish[int(fish)] += 1
+
+for day in range(256):
+    t_n_fish[0] = n_fish[1]
+    t_n_fish[1] = n_fish[2]
+    t_n_fish[2] = n_fish[3]
+    t_n_fish[3] = n_fish[4]
+    t_n_fish[4] = n_fish[5]
+    t_n_fish[5] = n_fish[6]
+    t_n_fish[6] = n_fish[7] + n_fish[0]
+    t_n_fish[7] = n_fish[8]
+    t_n_fish[8] = n_fish[0]
+
+    n_fish = t_n_fish.copy()
+
+answer_b = sum(n_fish)
 print("Part b: " + str(answer_b))
 if args.submit and not args.testcase and answer_b:
     submit(answer=answer_b, part="b", day=6, year=2021)
