@@ -4,6 +4,7 @@
 
 import argparse
 import os.path
+import statistics
 
 from aocd import get_data, submit
 
@@ -31,8 +32,14 @@ else:
 # ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝        ╚═╝                                   #
 ###############################################################################
 
+data_a = [int(d) for d in data[0].split(",")]
+target = int(statistics.median(data_a))
 
-answer_a = None
+fuel = 0
+for c in data_a:
+    fuel += abs(c - target)
+
+answer_a = fuel
 print("Part a: " + str(answer_a))
 if args.submit and not args.testcase and answer_a:
     submit(answer=answer_a, part="a", day=7, year=2021)
@@ -45,8 +52,19 @@ if args.submit and not args.testcase and answer_a:
 # ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝       ╚══════╝                               #
 ###############################################################################
 
+data_b = [int(d) for d in data[0].split(",")]
+targetFloor = int(statistics.mean(data_b))
+targetCeil = targetFloor + 1
 
-answer_b = None
+fuelFloor = 0
+fuelCeil = 0
+for c in data_b:
+    lenFloor = abs(c - targetFloor)
+    lenCeil = abs(c - targetCeil)
+    fuelFloor += (lenFloor * (1 + lenFloor)) / 2
+    fuelCeil += (lenCeil * (1 + lenCeil)) / 2
+
+answer_b = int(fuelFloor) if fuelFloor < fuelCeil else int(fuelCeil)
 print("Part b: " + str(answer_b))
 if args.submit and not args.testcase and answer_b:
     submit(answer=answer_b, part="b", day=7, year=2021)
