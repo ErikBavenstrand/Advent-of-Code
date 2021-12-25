@@ -5,13 +5,15 @@
 def part_a(data: list[str]):
     depth = 0
     forward = 0
-    for line in data:
-        if "forward" in line:
-            forward += int(line.split(" ")[1])
-        elif "down" in line:
-            depth += int(line.split(" ")[1])
-        elif "up" in line:
-            depth -= int(line.split(" ")[1])
+    for direction, amount in [(line.split(" ")[0], int(line.split(" ")[1]))
+                              for line in data]:
+        match direction:
+            case "forward":
+                forward += amount
+            case "down":
+                depth += amount
+            case "up":
+                depth -= amount
 
     return forward * depth
 
@@ -20,13 +22,15 @@ def part_b(data: list[str]):
     depth = 0
     forward = 0
     aim = 0
-    for line in data:
-        if "forward" in line:
-            forward += int(line.split(" ")[1])
-            depth += aim * int(line.split(" ")[1])
-        elif "down" in line:
-            aim += int(line.split(" ")[1])
-        elif "up" in line:
-            aim -= int(line.split(" ")[1])
+    for direction, amount in [(line.split(" ")[0], int(line.split(" ")[1]))
+                              for line in data]:
+        match direction:
+            case "forward":
+                forward += amount
+                depth += aim * amount
+            case "down":
+                aim += amount
+            case "up":
+                aim -= amount
 
     return forward * depth

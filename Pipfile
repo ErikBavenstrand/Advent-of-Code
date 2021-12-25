@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 advent-of-code-data = "*"
 numpy = "*"
+scipy = "*"
 
 [dev-packages]
 autopep8 = "*"
