@@ -7,7 +7,7 @@
 [![MIT License][license-shield]][license-url]
 
 <!-- PROJECT LOGO -->
-<br />
+<br /> 
 <div align="center">
   <a href="https://github.com/ErikBavenstrand/Advent-of-Code">
     <img src="images/AoC.jpg" alt="Logo">
