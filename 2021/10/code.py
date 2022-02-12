@@ -2,51 +2,65 @@
 # Author: Erik Båvenstrand
 # URL: https://adventofcode.com/2021/day/10
 
-import argparse
-import os.path
-
-from aocd import get_data, submit
-
-parser = argparse.ArgumentParser()
-group = parser.add_mutually_exclusive_group()
-group.add_argument("-t, --testcase", dest="testcase", action="store_true")
-group.add_argument("-s, --submit", dest="submit", action="store_true")
-parser.set_defaults(testcase=False, submit=False)
-args = parser.parse_args()
-
-data = ""
-if args.testcase:
-    with open((os.path.join(os.path.dirname(__file__),
-                            "testcase.txt")), "r") as f:
-        data = f.read().splitlines()
-else:
-    data = get_data(day=10, year=2021).splitlines()
-
-###############################################################################
-# ██████╗  █████╗ ██████╗ ████████╗     ██╗                                   #
-# ██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝    ███║                                   #
-# ██████╔╝███████║██████╔╝   ██║       ╚██║                                   #
-# ██╔═══╝ ██╔══██║██╔══██╗   ██║        ██║                                   #
-# ██║     ██║  ██║██║  ██║   ██║        ██║                                   #
-# ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝        ╚═╝                                   #
-###############################################################################
+import collections
 
 
-answer_a = None
-print("Part a: " + str(answer_a))
-if args.submit and not args.testcase and answer_a:
-    submit(answer=answer_a, part="a", day=10, year=2021)
-###############################################################################
-# ██████╗  █████╗ ██████╗ ████████╗    ██████╗                                #
-# ██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝    ╚════██╗                               #
-# ██████╔╝███████║██████╔╝   ██║        █████╔╝                               #
-# ██╔═══╝ ██╔══██║██╔══██╗   ██║       ██╔═══╝                                #
-# ██║     ██║  ██║██║  ██║   ██║       ███████╗                               #
-# ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝       ╚══════╝                               #
-###############################################################################
+def part_a(data: list[str]):
+    pairs = {")": "(", "}": "{", "]": "[", ">": "<"}
+    scores = {")": 3, "}": 1197, "]": 57, ">": 25137}
+
+    complete_lines = []
+    sum = 0
+    for line in data:
+        q = collections.deque()
+        complete_lines.append(line)
+        for char in line:
+            if char == "(" or char == "{" or char == "[" or char == "<":
+                q.append(char)
+            elif char == ")" or char == "}" or char == "]" or char == ">":
+                p = q.pop()
+                if pairs[char] != p:
+                    sum += scores[char]
+                    complete_lines.pop()
+                    break
+
+    return sum
 
 
-answer_b = None
-print("Part b: " + str(answer_b))
-if args.submit and not args.testcase and answer_b:
-    submit(answer=answer_b, part="b", day=10, year=2021)
+def part_b(data: list[str]):
+    pairs = {")": "(", "}": "{", "]": "[", ">": "<"}
+    scores = {")": 3, "}": 1197, "]": 57, ">": 25137}
+
+    complete_lines = []
+    sum = 0
+    for line in data:
+        q = collections.deque()
+        complete_lines.append(line)
+        for char in line:
+            if char == "(" or char == "{" or char == "[" or char == "<":
+                q.append(char)
+            elif char == ")" or char == "}" or char == "]" or char == ">":
+                p = q.pop()
+                if pairs[char] != p:
+                    sum += scores[char]
+                    complete_lines.pop()
+                    break
+
+    pairs = {"(": ")", "{": "}", "[": "]", "<": ">"}
+    scores = {")": 1, "}": 3, "]": 2, ">": 4}
+
+    sums = [0] * len(complete_lines)
+    for i, line in enumerate(complete_lines):
+        q = collections.deque()
+        for char in line:
+            if char == "(" or char == "{" or char == "[" or char == "<":
+                q.append(char)
+            elif char == ")" or char == "}" or char == "]" or char == ">":
+                p = q.pop()
+        missing = list(map(lambda item: pairs[item], list(q)))
+        missing.reverse()
+
+        for char in missing:
+            sums[i] = (sums[i] * 5) + scores[char]
+
+    return sorted(sums)[int((len(sums)) / 2)]

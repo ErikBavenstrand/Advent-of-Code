@@ -1,36 +1,8 @@
-# Advent of Code 2021 Day 4
+# Advent of Code 2021 Day 04
 # Author: Erik Båvenstrand
 # URL: https://adventofcode.com/2021/day/4
 
-import argparse
-import os.path
-
 import numpy as np
-from aocd import get_data, submit
-
-parser = argparse.ArgumentParser()
-group = parser.add_mutually_exclusive_group()
-group.add_argument("-t, --testcase", dest="testcase", action="store_true")
-group.add_argument("-s, --submit", dest="submit", action="store_true")
-parser.set_defaults(testcase=False, submit=False)
-args = parser.parse_args()
-
-data = ""
-if args.testcase:
-    with open((os.path.join(os.path.dirname(__file__),
-                            "testcase.txt")), "r") as f:
-        data = f.read().splitlines()
-else:
-    data = get_data(day=4, year=2021).splitlines()
-
-###############################################################################
-# ██████╗  █████╗ ██████╗ ████████╗     ██╗                                   #
-# ██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝    ███║                                   #
-# ██████╔╝███████║██████╔╝   ██║       ╚██║                                   #
-# ██╔═══╝ ██╔══██║██╔══██╗   ██║        ██║                                   #
-# ██║     ██║  ██║██║  ██║   ██║        ██║                                   #
-# ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝        ╚═╝                                   #
-###############################################################################
 
 
 class Bingo:
@@ -74,60 +46,48 @@ class Bingo:
         return board
 
 
-numbers = data[0].split(",")
-boards = []
+def part_a(data: list[str]):
+    numbers = data[0].split(",")
+    boards = []
 
-for inp in data[1:]:
-    if inp == "":
-        boards.append(Bingo())
-    else:
-        boards[-1].insert_row(inp)
+    for inp in data[1:]:
+        if inp == "":
+            boards.append(Bingo())
+        else:
+            boards[-1].insert_row(inp)
 
-bingo = False
-score = 0
-for num in numbers:
-    if not bingo:
-        for board in boards:
-            board.cross_number(num)
-            if board.check_bingo():
-                bingo = True
-                score = board.get_score(num)
-
-answer_a = score
-print("Part a: " + str(answer_a))
-if args.submit and not args.testcase and answer_a:
-    submit(answer=answer_a, part="a", day=4, year=2021)
-###############################################################################
-# ██████╗  █████╗ ██████╗ ████████╗    ██████╗                                #
-# ██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝    ╚════██╗                               #
-# ██████╔╝███████║██████╔╝   ██║        █████╔╝                               #
-# ██╔═══╝ ██╔══██║██╔══██╗   ██║       ██╔═══╝                                #
-# ██║     ██║  ██║██║  ██║   ██║       ███████╗                               #
-# ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝       ╚══════╝                               #
-###############################################################################
-
-
-numbers = data[0].split(",")
-boards = []
-for inp in data[1:]:
-    if inp == "":
-        boards.append(Bingo())
-    else:
-        boards[-1].insert_row(inp)
-
-score = 0
-total_boards = len(boards)
-for num in numbers:
-    for board in boards:
-        if not board.already_won:
-            board.cross_number(num)
-            if board.check_bingo():
-                board.already_won = True
-                if total_boards == 1:
+    bingo = False
+    score = 0
+    for num in numbers:
+        if not bingo:
+            for board in boards:
+                board.cross_number(num)
+                if board.check_bingo():
+                    bingo = True
                     score = board.get_score(num)
-                total_boards -= 1
 
-answer_b = score
-print("Part b: " + str(answer_b))
-if args.submit and not args.testcase and answer_b:
-    submit(answer=answer_b, part="b", day=4, year=2021)
+    return score
+
+
+def part_b(data: list[str]):
+    numbers = data[0].split(",")
+    boards = []
+    for inp in data[1:]:
+        if inp == "":
+            boards.append(Bingo())
+        else:
+            boards[-1].insert_row(inp)
+
+    score = 0
+    total_boards = len(boards)
+    for num in numbers:
+        for board in boards:
+            if not board.already_won:
+                board.cross_number(num)
+                if board.check_bingo():
+                    board.already_won = True
+                    if total_boards == 1:
+                        score = board.get_score(num)
+                    total_boards -= 1
+
+    return score

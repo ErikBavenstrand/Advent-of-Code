@@ -1,0 +1,362 @@
+# GENERIC INPUT DIGIT
+inp w
+mul x 0
+add x z
+mod x 26
+div z {a}
+add x {b}
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y {c}
+mul y x
+add z y
+
+# COMPACTED PYTHON
+w = input
+x = int(((z % 26) + {b}) != w)
+z //= {a} 
+z *= x * 25 + 1
+z += x * (w + {c})
+
+# {c} is always positive
+# {a} is either 1 or 26
+# if {a} is 1, then {b} is [10, 15]
+
+# 10 <= (z % 26) + {b} <= 35 which can never equal w = [1, 9]
+# and z //= {a} is a noop
+
+# If {a} = 1 -> {b} = [10, 15]
+w = input
+z *= 26
+z += w + {c}
+
+
+# If {a} = 1 then z is always increasing which means that when {a} = 26
+# x = int(((z % 26) + {b}) != w) has to be 0 in order to decrease the 
+# value of z towards 0
+
+# In order for x to be 0, (w_old + {c_old}) = w_curr - {b_curr}
+# Therefore the following 7 equations
+w4 + 7 = w5 - (-10)
+w6 + 6 = w7 - (-14)
+w8 + 11 = w9 - (-4)
+w3 + 2 = w10 - (-3)
+w11 + 11 = w12 - (-3)
+w2 + 3 = w13 - (-9)
+w1 + 16 = w14 - (-12)
+
+# Simplified:
+w4 - 3 = w5
+w6 - 8 = w7
+w8 + 7 = w9
+w3 - 1 = w10
+w11 + 8 = w12
+w2 - 6 = w13
+w1 + 4 = w14
+
+# To maximize start with w1 going as high as possible in the range [1, 9]
+w1 = 5
+w2 = 9
+w3 = 9
+w4 = 9
+w5 = 6
+w6 = 9
+w7 = 1
+w8 = 2
+w9 = 9
+w10 = 8
+w11 = 1
+w12 = 9
+w13 = 3
+w14 = 9
+59996912981939
+
+# To minimize start with w1 as low as possible in the range [1, 9]
+w1 = 1
+w2 = 7
+w3 = 2
+w4 = 4
+w5 = 1
+w6 = 9
+w7 = 1
+w8 = 1
+w9 = 8
+w10 = 1
+w11 = 1
+w12 = 9
+w13 = 1
+w14 = 5
+17241911811915
+
+inp w1
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 14
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 16
+mul y x
+add z y
+
+inp w2
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 11
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 3
+mul y x
+add z y
+
+inp w3
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 12
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 2
+mul y x
+add z y
+
+inp w4
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 11
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 7
+mul y x
+add z y
+
+inp w5
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -10
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 13
+mul y x
+add z y
+
+inp w6
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 15
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 6
+mul y x
+add z y
+
+inp w7
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -14
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 10
+mul y x
+add z y
+
+inp w8
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 10
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 11
+mul y x
+add z y
+
+inp w9
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -4
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 6
+mul y x
+add z y
+
+inp w10
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -3
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 5
+mul y x
+add z y
+
+inp w11
+mul x 0
+add x z
+mod x 26
+div z 1
+add x 13
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 11
+mul y x
+add z y
+
+inp w12
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -3
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 4
+mul y x
+add z y
+
+inp w13
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -9
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 4
+mul y x
+add z y
+
+inp w14
+mul x 0
+add x z
+mod x 26
+div z 26
+add x -12
+eql x w
+eql x 0
+mul y 0
+add y 25
+mul y x
+add y 1
+mul z y
+mul y 0
+add y w
+add y 6
+mul y x
+add z y

@@ -2,51 +2,103 @@
 # Author: Erik Båvenstrand
 # URL: https://adventofcode.com/2021/day/11
 
-import argparse
-import os.path
-
-from aocd import get_data, submit
-
-parser = argparse.ArgumentParser()
-group = parser.add_mutually_exclusive_group()
-group.add_argument("-t, --testcase", dest="testcase", action="store_true")
-group.add_argument("-s, --submit", dest="submit", action="store_true")
-parser.set_defaults(testcase=False, submit=False)
-args = parser.parse_args()
-
-data = ""
-if args.testcase:
-    with open((os.path.join(os.path.dirname(__file__),
-                            "testcase.txt")), "r") as f:
-        data = f.read().splitlines()
-else:
-    data = get_data(day=11, year=2021).splitlines()
-
-###############################################################################
-# ██████╗  █████╗ ██████╗ ████████╗     ██╗                                   #
-# ██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝    ███║                                   #
-# ██████╔╝███████║██████╔╝   ██║       ╚██║                                   #
-# ██╔═══╝ ██╔══██║██╔══██╗   ██║        ██║                                   #
-# ██║     ██║  ██║██║  ██║   ██║        ██║                                   #
-# ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝        ╚═╝                                   #
-###############################################################################
+import numpy as np
 
 
-answer_a = None
-print("Part a: " + str(answer_a))
-if args.submit and not args.testcase and answer_a:
-    submit(answer=answer_a, part="a", day=11, year=2021)
-###############################################################################
-# ██████╗  █████╗ ██████╗ ████████╗    ██████╗                                #
-# ██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝    ╚════██╗                               #
-# ██████╔╝███████║██████╔╝   ██║        █████╔╝                               #
-# ██╔═══╝ ██╔══██║██╔══██╗   ██║       ██╔═══╝                                #
-# ██║     ██║  ██║██║  ██║   ██║       ███████╗                               #
-# ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝       ╚══════╝                               #
-###############################################################################
+def part_a(data: list[str]):
+    grid = np.empty((len(data), len(data)), int)
+    for i, line in enumerate(data):
+        grid[i] = list(line)
+
+    flashes = 0
+    for day in range(100):
+        grid += 1
+        chaining = True
+        flashed = set()
+        while chaining:
+            rows, cols = np.where(grid > 9)
+            for i, (r, c) in enumerate(zip(rows, cols)):
+                if (r, c) in flashed:
+                    rows[i] = -1
+                    cols[i] = -1
+                flashed.add((r, c))
+            if np.sum(rows > -1) == 0:
+                chaining = False
+
+            for r, c in zip(rows, cols):
+                if r == -1 and c == -1:
+                    continue
+                if r > 0:
+                    grid[r-1, c] += 1
+                if r < len(data) - 1:
+                    grid[r+1, c] += 1
+                if c > 0:
+                    grid[r, c-1] += 1
+                if c < len(data) - 1:
+                    grid[r, c+1] += 1
+                if r > 0 and c > 0:
+                    grid[r-1, c-1] += 1
+                if r < len(data) - 1 and c < len(data) - 1:
+                    grid[r+1, c+1] += 1
+                if c > 0 and r < len(data) - 1:
+                    grid[r+1, c-1] += 1
+                if c < len(data) - 1 and r > 0:
+                    grid[r-1, c+1] += 1
+
+        coords = list(flashed)
+        for row, col in coords:
+            grid[row, col] = 0
+        flashes += len(coords)
+
+    return flashes
 
 
-answer_b = None
-print("Part b: " + str(answer_b))
-if args.submit and not args.testcase and answer_b:
-    submit(answer=answer_b, part="b", day=11, year=2021)
+def part_b(data: list[str]):
+    grid = np.empty((len(data), len(data)), int)
+    for i, line in enumerate(data):
+        grid[i] = list(line)
+
+    mega_day = 0
+    day = 0
+    while mega_day == 0:
+        grid += 1
+        chaining = True
+        flashed = set()
+        while chaining:
+            rows, cols = np.where(grid > 9)
+            for i, (r, c) in enumerate(zip(rows, cols)):
+                if (r, c) in flashed:
+                    rows[i] = -1
+                    cols[i] = -1
+                flashed.add((r, c))
+            if np.sum(rows > -1) == 0:
+                chaining = False
+
+            for r, c in zip(rows, cols):
+                if r == -1 and c == -1:
+                    continue
+                if r > 0:
+                    grid[r-1, c] += 1
+                if r < len(data) - 1:
+                    grid[r+1, c] += 1
+                if c > 0:
+                    grid[r, c-1] += 1
+                if c < len(data) - 1:
+                    grid[r, c+1] += 1
+                if r > 0 and c > 0:
+                    grid[r-1, c-1] += 1
+                if r < len(data) - 1 and c < len(data) - 1:
+                    grid[r+1, c+1] += 1
+                if c > 0 and r < len(data) - 1:
+                    grid[r+1, c-1] += 1
+                if c < len(data) - 1 and r > 0:
+                    grid[r-1, c+1] += 1
+
+        coords = list(flashed)
+        for row, col in coords:
+            grid[row, col] = 0
+        if len(coords) == len(data)**2:
+            mega_day = day + 1
+        day += 1
+
+    return mega_day
