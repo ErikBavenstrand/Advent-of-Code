@@ -21,7 +21,36 @@
 
 ## About
 
-Solutions to (some) Advent of Code challenges. Ensure that Pipenv is installed and run setup script `init.py` to generate template code solutions.
+Solutions to (some) Advent of Code challenges written in `Python`.
+
+### Requirements
+
+- `Python 3.10`
+- `Pipenv`
+
+### Running
+
+First generate the boilerplate code:
+
+```
+$ python aoc.py [year] [day] generate --author "Firstname Lastname"
+```
+
+Implement the solutions for part A and B and add the test case to `./[year]/[day]/testcase.txt` (needs to be manually copeid from AoC website).
+
+To test the solutions run:
+
+```
+$ python aoc.py [year] [day] test
+```
+
+Finally, run the following command to solve and submit using the real data.
+
+**Important**: follow the instructions [here](https://github.com/wimglenn/advent-of-code-data#quickstart) on how to add your AoC session cookie to your local machine.
+
+```
+$ python aoc.py [year] [day] solve --submit
+```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 

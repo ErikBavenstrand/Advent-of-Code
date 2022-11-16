@@ -1,6 +1,6 @@
-# Advent of Code 2021 Day 01
+# Advent of Code 2020 Day 01
 # Author: Erik Båvenstrand
-# URL: https://adventofcode.com/2021/day/1
+# URL: https://adventofcode.com/2020/day/1
 
 from typing import Union
 
@@ -14,11 +14,11 @@ def part_a(data: list[str]) -> Union[int, str, None]:
     Returns:
         Union[int, str, None]: Solution to the challenge.
     """
-    count = 0
-    for i in range(len(data)):
-        if i >= 1 and int(data[i]) > int(data[i - 1]):
-            count += 1
-    return count
+    value_list = list(map(int, data))
+    value_set = set(value_list)
+    for x in value_list:
+        if 2020 - x in value_set:
+            return x * (2020 - x)
 
 
 def part_b(data: list[str]) -> Union[int, str, None]:
@@ -30,8 +30,9 @@ def part_b(data: list[str]) -> Union[int, str, None]:
     Returns:
         Union[int, str, None]: Solution to the challenge.
     """
-    counter = 0
-    for i in range(len(data)):
-        if i >= 3 and int(data[i]) > int(data[i - 3]):
-            counter += 1
-    return counter
+    value_list = list(map(int, data))
+    value_set = set(value_list)
+    for x in value_list:
+        for y in value_list:
+            if 2020 - x - y in value_set:
+                return x * y * (2020 - x - y)
