@@ -17,8 +17,9 @@ def part_a(data: list[str]) -> Union[int, str, None]:
     value_list = list(map(int, data))
     value_set = set(value_list)
     for x in value_list:
-        if 2020 - x in value_set:
-            return x * (2020 - x)
+        remainder = 2020 - x
+        if remainder in value_set:
+            return x * remainder
 
 
 def part_b(data: list[str]) -> Union[int, str, None]:
@@ -34,5 +35,6 @@ def part_b(data: list[str]) -> Union[int, str, None]:
     value_set = set(value_list)
     for x in value_list:
         for y in value_list:
-            if 2020 - x - y in value_set:
-                return x * y * (2020 - x - y)
+            remainder = 2020 - x - y
+            if remainder in value_set:
+                return x * y * remainder
