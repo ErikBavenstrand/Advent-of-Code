@@ -4,16 +4,16 @@
 
 from __future__ import annotations
 
-from abc import ABC
+from abc import ABC, abstractmethod
 from typing import Any, Optional, Union
 
 import numpy as np
 
 
-class SumTree:
-    def __init__(self, key: Any, data: Any):
-        self.key: Any = key
-        self.data: Any = data
+class AbstractTree(ABC):
+    
+    @abstractmethod
+    def is_leaf
 
 
 class Node(ABC):
