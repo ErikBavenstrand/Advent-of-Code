@@ -4,8 +4,8 @@
 
 from typing import Union
 
-from adventlib.utils.List import chunk_list
-from adventlib.utils.String import split_string
+from adventlib.utils.list import chunk_list
+from adventlib.utils.string import split_string
 
 
 def get_item_prioritization(item: str) -> int:
