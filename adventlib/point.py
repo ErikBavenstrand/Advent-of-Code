@@ -1,38 +1,93 @@
 from __future__ import annotations
 
 import math
-from typing import Union
+from typing import Tuple, Union
+
+NumberType = Union[int, float]
+PointTupleType = Tuple[NumberType, NumberType]
 
 
 class Point2D:
-    def __init__(self, x: Union[int, float], y: Union[int, float]) -> None:
-        self.x: Union[int, float] = x
-        self.y: Union[int, float] = y
+    """Point2D."""
 
-    def __str__(self):
+    def __init__(self, x: NumberType, y: NumberType) -> None:
+        """Initialize a 2D point.
+
+        Args:
+            x: X coordinate.
+            y: Y coordinate.
+        """
+        self.x: NumberType = x
+        self.y: NumberType = y
+
+    def __str__(self) -> str:
+        """String representation of point.
+
+        Returns:
+            Point string representation.
+        """
         return f"({self.x}, {self.y})"
 
-    def __add__(self, point):
+    def __repr__(self) -> PointTupleType:
+        """Representation of a point.
+
+        Returns:
+            Point representation.
+        """
+        return (self.x, self.y)
+
+    def __add__(self, point: Union[Point2D, PointTupleType]) -> Point2D:
+        """Vector addition of two specified points.
+
+        Args:
+            point: Point to add.
+
+        Returns:
+            Resulting point.
+        """
         if isinstance(point, Point2D):
             return Point2D(self.x + point.x, self.y + point.y)
         elif isinstance(point, tuple) and len(point) == 2:
             return Point2D(self.x + point[0], self.y + point[1])
         return NotImplemented
 
-    def __sub__(self, point: Union[Point2D, tuple[Union[]]]):
+    def __sub__(self, point: Union[Point2D, PointTupleType]) -> Point2D:
+        """Vector subtraction of two points.
+
+        Args:
+            point: Point to subtract.
+
+        Returns:
+            Resulting point.
+        """
         if isinstance(point, Point2D):
             return self.__add__((-point.x, -point.y))
         elif isinstance(point, tuple) and len(point) == 2:
             return self.__add__((-point[0], -point[1]))
         return NotImplemented
 
-    def __eq__(self, point):
-        if type(point) is Point2D:
+    def __eq__(self, point: Union[Point2D, PointTupleType]) -> bool:
+        """Check if points are equal.
+
+        Args:
+            point: Point to compare with.
+
+        Returns:
+            True if points are equal.
+        """
+        if isinstance(point, Point2D):
             return (self.x == point.x) and (self.y == point.y)
+        elif isinstance(point, tuple) and len(point) == 2:
+            return (self.x == point[0]) and (self.y == point[1])
         else:
             return False
 
-    def __hash__(self):
+    def __hash__(self) -> int:
+        """Hash function for point.
+
+        Returns:
+            Hashed value.
+        """
         return hash((self.x, self.y))
 
     @staticmethod
