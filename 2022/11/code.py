@@ -3,7 +3,8 @@
 # URL: https://adventofcode.com/2022/day/11
 
 import math
-from typing import Union
+from collections import deque
+from typing import Callable, Deque, Union
 
 
 class Monkey:
@@ -12,7 +13,7 @@ class Monkey:
     def __init__(
         self,
         monkey_id: int,
-        items: list[int],
+        items: Deque[int],
         func_expr: str,
         divider: int,
         target_monkey_id: dict[bool, int],
@@ -30,8 +31,8 @@ class Monkey:
             decay: Next item value decay. Defaults to 1.
         """
         self.monkey_id: int = monkey_id
-        self.items: list[int] = items
-        self.func_expr: str = func_expr
+        self.items: Deque[int] = items
+        self.func: Callable = lambda x: eval(func_expr)
         self.divider: int = divider
         self.target_monkey_id: dict[bool, int] = target_monkey_id
         self.decay: int = decay
@@ -42,8 +43,8 @@ class Monkey:
         Returns:
             New item value.
         """
-        item = self.items.pop(0)
-        return math.floor((lambda x: eval(self.func_expr))(item) / self.decay)
+        item = self.items.popleft()
+        return math.floor(self.func(item) / self.decay)
 
     def get_next_monkey_id(self, item: int) -> int:
         """Get the id of the target monkey.
@@ -70,7 +71,9 @@ def part_a(data: list[str]) -> Union[int, str, None]:
     for monkey in "\n".join(data).split("\n\n"):
         monkey_info = monkey.split("\n")
         monkey_id = int(monkey_info[0].split()[1][:-1])
-        monkey_items = [int(item) for item in monkey_info[1].split(": ")[1].split(", ")]
+        monkey_items = deque(
+            [int(item) for item in monkey_info[1].split(": ")[1].split(", ")]
+        )
         monkey_func = monkey_info[2].split("new = ")[1].replace("old", "x")
         divider = int(monkey_info[3].split("divisible by ")[1])
         target_monkey_id: dict[bool, int] = {
@@ -102,11 +105,13 @@ def part_b(data: list[str]) -> Union[int, str, None]:
         Union[int, str, None]: Solution to the challenge.
     """
     monkeys: list[Monkey] = []
-    common_denominator = 1
+    denominators: list[int] = []
     for monkey in "\n".join(data).split("\n\n"):
         monkey_info = monkey.split("\n")
         monkey_id = int(monkey_info[0].split()[1][:-1])
-        monkey_items = [int(item) for item in monkey_info[1].split(": ")[1].split(", ")]
+        monkey_items = deque(
+            [int(item) for item in monkey_info[1].split(": ")[1].split(", ")]
+        )
         monkey_func = monkey_info[2].split("new = ")[1].replace("old", "x")
         divider = int(monkey_info[3].split("divisible by ")[1])
         target_monkey_id: dict[bool, int] = {
@@ -116,14 +121,15 @@ def part_b(data: list[str]) -> Union[int, str, None]:
         monkeys.append(
             Monkey(monkey_id, monkey_items, monkey_func, divider, target_monkey_id)
         )
-        common_denominator *= divider
+        denominators.append(divider)
 
+    lcm = math.lcm(*denominators)
     monkey_activity = [0 for _ in range(len(monkeys))]
     for _ in range(10000):
         for monkey in monkeys:
             monkey_activity[monkey.monkey_id] += len(monkey.items)
             for _ in range(len(monkey.items)):
-                item = monkey.get_item_next_value() % common_denominator
+                item = monkey.get_item_next_value() % lcm
                 target_id = monkey.get_next_monkey_id(item)
                 monkeys[target_id].items.append(item)
     return math.prod(sorted(monkey_activity, reverse=True)[:2])
