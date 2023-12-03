@@ -28,13 +28,13 @@ class Point2D:
         """
         return f"({self.x}, {self.y})"
 
-    def __repr__(self) -> PointTupleType:
+    def __repr__(self) -> str:
         """Representation of a point.
 
         Returns:
             Point representation.
         """
-        return (self.x, self.y)
+        return str(self)
 
     def __add__(self, point: Union[Point2D, PointTupleType]) -> Point2D:
         """Vector addition of two specified points.
@@ -104,9 +104,7 @@ class Point2D:
         return math.hypot(p1.x - p2.x, p1.y - p2.y)
 
     @staticmethod
-    def distance_vector(
-        p1: Point2D, p2: Point2D
-    ) -> tuple[Union[int, float], Union[int, float]]:
+    def distance_vector(p1: Point2D, p2: Point2D) -> PointTupleType:
         """Calculate the distance vector between p1 and p2.
 
         Args:
@@ -117,3 +115,7 @@ class Point2D:
             Distance vector between the points.
         """
         return (p1.x - p2.x, p1.y - p2.y)
+
+    @staticmethod
+    def manhattan_distance(p1: Point2D, p2: Point2D) -> NumberType:
+        return abs(p1.x - p2.x) + abs(p1.y - p2.y)

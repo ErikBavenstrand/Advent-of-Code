@@ -106,29 +106,27 @@ if args.action == "generate":
 # Author: {args.author}
 # URL: https://adventofcode.com/{args.year}/day/{args.day}
 
-from typing import Union
 
-
-def part_a(data: list[str]) -> Union[int, str, None]:
+def part_a(data: list[str]) -> int | str | None:
     \"\"\"Solution to part A.
 
     Args:
-        data (list[str]): Advent of Code challenge input.
+        data: Advent of Code challenge input.
 
     Returns:
-        Union[int, str, None]: Solution to the challenge.
+        Solution to the challenge.
     \"\"\"
     return None
 
 
-def part_b(data: list[str]) -> Union[int, str, None]:
+def part_b(data: list[str]) -> int | str | None:
     \"\"\"Solution to part B.
 
     Args:
-        data (list[str]): Advent of Code challenge input.
+        data: Advent of Code challenge input.
 
     Returns:
-        Union[int, str, None]: Solution to the challenge.
+        Solution to the challenge.
     \"\"\"
     return None
 """

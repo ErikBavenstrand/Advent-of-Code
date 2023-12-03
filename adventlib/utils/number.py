@@ -1,4 +1,18 @@
-from typing import Union
+from typing import Union, overload
+
+
+@overload
+def clamp(
+    value: int, min_value: Union[int, float], max_value: Union[int, float]
+) -> int:
+    ...
+
+
+@overload
+def clamp(
+    value: int, min_value: Union[int, float], max_value: Union[int, float]
+) -> float:
+    ...
 
 
 def clamp(
