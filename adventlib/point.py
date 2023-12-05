@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import math
-from typing import Tuple, Union
+from typing import Generator, Tuple, Union
 
 NumberType = Union[int, float]
 PointTupleType = Tuple[NumberType, NumberType]
@@ -36,49 +36,49 @@ class Point2D:
         """
         return str(self)
 
-    def __add__(self, point: Union[Point2D, PointTupleType]) -> Point2D:
+    def __add__(self, other: Point2D | PointTupleType) -> Point2D:
         """Vector addition of two specified points.
 
         Args:
-            point: Point to add.
+            other: Point to add.
 
         Returns:
             Resulting point.
         """
-        if isinstance(point, Point2D):
-            return Point2D(self.x + point.x, self.y + point.y)
-        elif isinstance(point, tuple) and len(point) == 2:
-            return Point2D(self.x + point[0], self.y + point[1])
+        if isinstance(other, Point2D):
+            return Point2D(self.x + other.x, self.y + other.y)
+        elif isinstance(other, tuple) and len(other) == 2:
+            return Point2D(self.x + other[0], self.y + other[1])
         return NotImplemented
 
-    def __sub__(self, point: Union[Point2D, PointTupleType]) -> Point2D:
+    def __sub__(self, other: Point2D | PointTupleType) -> Point2D:
         """Vector subtraction of two points.
 
         Args:
-            point: Point to subtract.
+            other: Point to subtract.
 
         Returns:
             Resulting point.
         """
-        if isinstance(point, Point2D):
-            return self.__add__((-point.x, -point.y))
-        elif isinstance(point, tuple) and len(point) == 2:
-            return self.__add__((-point[0], -point[1]))
+        if isinstance(other, Point2D):
+            return self.__add__((-other.x, -other.y))
+        elif isinstance(other, tuple) and len(other) == 2:
+            return self.__add__((-other[0], -other[1]))
         return NotImplemented
 
-    def __eq__(self, point: Union[Point2D, PointTupleType]) -> bool:
+    def __eq__(self, other: Point2D | PointTupleType) -> bool:
         """Check if points are equal.
 
         Args:
-            point: Point to compare with.
+            other: Point to compare with.
 
         Returns:
             True if points are equal.
         """
-        if isinstance(point, Point2D):
-            return (self.x == point.x) and (self.y == point.y)
-        elif isinstance(point, tuple) and len(point) == 2:
-            return (self.x == point[0]) and (self.y == point[1])
+        if isinstance(other, Point2D):
+            return (self.x == other.x) and (self.y == other.y)
+        elif isinstance(other, tuple) and len(other) == 2:
+            return (self.x == other[0]) and (self.y == other[1])
         else:
             return False
 
@@ -89,6 +89,74 @@ class Point2D:
             Hashed value.
         """
         return hash((self.x, self.y))
+
+    def __(self) -> tuple[NumberType, NumberType]:
+        """Iterate over the point.
+
+        Returns:
+            Tuple of coordinates.
+        """
+        return (self.x, self.y)
+
+    def __iter__(self) -> Generator[NumberType, None, None]:
+        """Iterate over the point.
+
+
+        Yields:
+            Coordinates.
+        """
+        yield self.x
+        yield self.y
+
+    def neighbors(
+        self,
+        min_x: NumberType | None = None,
+        max_x: NumberType | None = None,
+        min_y: NumberType | None = None,
+        max_y: NumberType | None = None,
+        diagonals: bool = True,
+    ) -> list[Point2D]:
+        """Get the neighbors of the point.
+
+        Only works with integer coordinates.
+
+        Args:
+            min_x: Minimum x value.
+            max_x: Maximum x value.
+            min_y: Minimum y value.
+            max_y: Maximum y value.
+            diagonals: Whether to include diagonal neighbors.
+
+        Returns:
+            List of neighbors.
+        """
+        if not isinstance(self.x, int) or not isinstance(self.y, int):
+            raise ValueError("neighbors() only works with integer coordinates")
+
+        neighbors = [
+            Point2D(self.x - 1, self.y),
+            Point2D(self.x + 1, self.y),
+            Point2D(self.x, self.y - 1),
+            Point2D(self.x, self.y + 1),
+        ]
+        if diagonals:
+            neighbors.extend(
+                [
+                    Point2D(self.x - 1, self.y - 1),
+                    Point2D(self.x + 1, self.y - 1),
+                    Point2D(self.x - 1, self.y + 1),
+                    Point2D(self.x + 1, self.y + 1),
+                ]
+            )
+        if min_x is not None:
+            neighbors = [neighbor for neighbor in neighbors if neighbor.x >= min_x]
+        if min_y is not None:
+            neighbors = [neighbor for neighbor in neighbors if neighbor.y >= min_y]
+        if max_x is not None:
+            neighbors = [neighbor for neighbor in neighbors if neighbor.x <= max_x]
+        if max_y is not None:
+            neighbors = [neighbor for neighbor in neighbors if neighbor.y <= max_y]
+        return neighbors
 
     @staticmethod
     def distance(p1: Point2D, p2: Point2D) -> float:
@@ -118,4 +186,20 @@ class Point2D:
 
     @staticmethod
     def manhattan_distance(p1: Point2D, p2: Point2D) -> NumberType:
+        """Calculate the Manhattan distance between p1 and p2.
+
+        The Manhattan distance is the sum of the absolute values of the differences of the
+        coordinates.
+
+        Args:
+            p1: Point 1.
+            p2: Point 2.
+
+        Returns:
+            Manhattan distance between the points.
+        """
         return abs(p1.x - p2.x) + abs(p1.y - p2.y)
+
+
+if __name__ == "__main__":
+    print(Point2D(1, 1).neighbors(diagonals=True, min_x=0, min_y=0))

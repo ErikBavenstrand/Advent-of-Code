@@ -4,43 +4,25 @@
 
 import re
 
-
-def get_neighbors(x: int, y: int) -> list[tuple[int, int]]:
-    """Gets the neighbors of a coordinate.
-
-    Args:
-        x: X-coordinate.
-        y: Y-coordinate.
-
-    Returns:
-        A list of the coordinates neighbors.
-    """
-    return [
-        (x - 1, y - 1),
-        (x, y - 1),
-        (x + 1, y - 1),
-        (x - 1, y),
-        (x + 1, y),
-        (x - 1, y + 1),
-        (x, y + 1),
-        (x + 1, y + 1),
-    ]
+from adventlib.point import Point2D
 
 
-def get_number(data: list[str], x: int, y: int):
+def get_number(data: list[str], point: Point2D) -> tuple[int, set[Point2D]]:
     """Gets the full number at a coordinate.
 
     Args:
         data: Advent of Code challenge input.
-        x: X-coordinate.
-        y: Y-coordinate.
+        point: Coordinate to get the number at.
 
     Returns:
         The full number at the coordinate.
     """
+    x, y = [int(coord) for coord in point]
     left = "".join(re.findall(r"\d+$", data[y][:x]))
     right = "".join(re.findall(r"^\d+", data[y][x:]))
-    return int(left + right), {(x_i, y) for x_i in range(x - len(left), x + len(right))}
+    return int(left + right), {
+        Point2D(x_i, y) for x_i in range(x - len(left), x + len(right))
+    }
 
 
 def part_a(data: list[str]) -> int | str | None:
@@ -53,19 +35,20 @@ def part_a(data: list[str]) -> int | str | None:
         Solution to the challenge.
     """
     symbols = [
-        (x, y)
+        Point2D(x, y)
         for y, row in enumerate(data)
         for x, c in enumerate(row)
         if c not in "0123456789."
     ]
     result = 0
-    visited = set()
-    for x, y in symbols:
-        for x_i, y_i in get_neighbors(x, y):
-            if data[y_i][x_i].isdigit() and (x_i, y_i) not in visited:
-                number, coords = get_number(data, x_i, y_i)
+    visited: set[Point2D] = set()
+    for symbol in symbols:
+        for neighbor in symbol.neighbors(0, len(data[0]), 0, len(data)):
+            x_n, y_n = [int(coord) for coord in neighbor]
+            if data[y_n][x_n].isdigit() and neighbor not in visited:
+                number, number_points = get_number(data, neighbor)
                 result += number
-                visited |= coords
+                visited |= number_points
     return result
 
 
@@ -78,19 +61,23 @@ def part_b(data: list[str]) -> int | str | None:
     Returns:
         Solution to the challenge.
     """
-    symbols = [
-        (x, y) for y, row in enumerate(data) for x, c in enumerate(row) if c == "*"
+    gears = [
+        Point2D(x, y)
+        for y, row in enumerate(data)
+        for x, c in enumerate(row)
+        if c == "*"
     ]
     result = 0
-    visited = set()
-    for x, y in symbols:
+    visited: set[Point2D] = set()
+    for gear in gears:
         gear_ratio = 1
         num_numbers = 0
-        for x_i, y_i in get_neighbors(x, y):
-            if data[y_i][x_i].isdigit() and (x_i, y_i) not in visited:
-                number, coords = get_number(data, x_i, y_i)
+        for neighbor in gear.neighbors(0, len(data[0]), 0, len(data)):
+            x_n, y_n = [int(coord) for coord in neighbor]
+            if data[y_n][x_n].isdigit() and neighbor not in visited:
+                number, number_points = get_number(data, neighbor)
                 gear_ratio *= number
-                visited |= coords
+                visited |= number_points
                 num_numbers += 1
         if num_numbers == 2:
             result += gear_ratio

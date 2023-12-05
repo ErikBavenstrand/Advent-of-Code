@@ -1,7 +1,9 @@
-from typing import Optional
+from __future__ import annotations
 
 
 class Range:
+    """A range of numbers, from start (inclusive) to end (exclusive)."""
+
     __slots__ = ("start", "end")
 
     def __init__(self, start: int, end: int) -> None:
@@ -40,7 +42,7 @@ class Range:
             True if the ranges are equal, False otherwise.
         """
         if not isinstance(other, Range):
-            raise NotImplementedError(f"Cannot compare {self.__class__} to {other}")
+            return NotImplemented
         return self.start == other.start and self.end == other.end
 
     def __contains__(self, number: int) -> bool:
@@ -70,7 +72,7 @@ class Range:
         """
         return hash((self.start, self.end))
 
-    def has_intersection(self, other: "Range") -> bool:
+    def has_intersection(self, other: Range) -> bool:
         """Check if the range has an intersection with another range.
 
         Args:
@@ -81,7 +83,7 @@ class Range:
         """
         return self.start < other.end and other.start < self.end
 
-    def intersection(self, other: "Range") -> Optional["Range"]:
+    def intersection(self, other: Range) -> Range | None:
         """Get the intersection of the range with another range.
 
         Returns:
@@ -91,7 +93,7 @@ class Range:
             return None
         return Range(max(self.start, other.start), min(self.end, other.end))
 
-    def remainder(self, other: "Range") -> list["Range"]:
+    def remainder(self, other: Range) -> list[Range]:
         """Get the remainder of the range after removing the intersection with another range.
 
         Returns:
