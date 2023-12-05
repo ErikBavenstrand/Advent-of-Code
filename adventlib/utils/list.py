@@ -1,22 +1,27 @@
 from typing import Any, Callable, Iterator, TypeVar
 
-R = TypeVar("R")
+T = TypeVar("T")
 
 
 def chunk_list(
-    items: list, chunk_size: int, func: Callable[[Any], R] = lambda x: x
-) -> Iterator[list[R]]:
-    """Divides a list in chunks of specified size.
+    items: list,
+    chunk_size: int,
+    func: Callable[[Any], T] = lambda x: x,
+    apply_to_chunk: bool = False,
+) -> Iterator[T]:
+    """Applies a function to each item or each chunk based on user preference.
 
     Args:
-        items (list): List of items to be chunked.
-        chunk_size (int): Size of each chunk.
-        func (Callable): Mapping function to be applied to each list in chunk.
+        items: List of items to be processed.
+        chunk_size: Size of each chunk for processing.
+        func: Optional mapping function to be applied to each item.
+        apply_to_chunk: Boolean indicating whether to apply function to each chunk.
 
     Returns:
-        Iterator[list]: Chunked Iterator of list.
+        Iterator of results after applying the function to each item or each chunk.
     """
-    return (
-        list(map(func, items[idx : idx + chunk_size]))
-        for idx in range(0, len(items), chunk_size)
-    )
+    chunks = (items[idx : idx + chunk_size] for idx in range(0, len(items), chunk_size))
+
+    if apply_to_chunk and func:
+        return (func(chunk) for chunk in chunks)
+    return (func(item) for chunk in chunks for item in chunk)
