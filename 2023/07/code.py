@@ -3,11 +3,12 @@
 # URL: https://adventofcode.com/2023/day/7
 
 
-def get_tie_break_value(hand: str) -> int:
+def get_tie_break_value(hand: str, joker: bool = False) -> int:
     """Get the tie break value of a camel poker hand.
 
     Args:
         hand: A poker hand.
+        joker: Whether to treat Jacks as Jokers.
 
     Returns:
         The tie break value of the hand.
@@ -16,7 +17,7 @@ def get_tie_break_value(hand: str) -> int:
         "A": "14",
         "K": "13",
         "Q": "12",
-        "J": "11",
+        "J": "01" if joker else "11",
         "T": "10",
         "9": "09",
         "8": "08",
@@ -87,7 +88,7 @@ def part_a(data: list[str]) -> int | str | None:
         hand_value = evaluate_hand(hand)
         hand_values.append((hand, bid, hand_value, tie_break_value))
     hand_values.sort(key=lambda x: (x[2], x[3]))
-    return sum(int(bid) * i for i, (_, bid, _, _) in enumerate(hand_values, start=1))
+    return sum(i * int(bid) for i, (_, bid, _, _) in enumerate(hand_values, start=1))
 
 
 def part_b(data: list[str]) -> int | str | None:
@@ -99,26 +100,10 @@ def part_b(data: list[str]) -> int | str | None:
     Returns:
         Solution to the challenge.
     """
-    from collections import Counter
-
-    order = "J23456789TQKA"
-    my = 251156055
-    hi = 251481660
-    L = [line.split() for line in data]
-    L.sort(key=lambda x: [order.index(c) for c in x[0]])
-    L.sort(
-        key=lambda x: max(
-            sorted(Counter(x[0].replace("J", o)).values())[::-1] for o in order
-        )
-    )
-
-    print(sum(i * int(bid) for i, (_, bid) in enumerate(L, start=1)))
-
-    return None
     hand_values: list[tuple[str, str, int, int]] = []
     for line in data:
         hand, bid = line.split()
-        tie_break_value = get_tie_break_value(hand)
+        tie_break_value = get_tie_break_value(hand, joker=True)
         hand_value = max(
             evaluate_hand(hand.replace("J", card)) for card in "J23456789TQKA"
         )
