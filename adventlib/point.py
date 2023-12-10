@@ -3,6 +3,7 @@ from __future__ import annotations
 import math
 from typing import Generator, Tuple, Union
 
+
 NumberType = Union[int, float]
 PointTupleType = Tuple[NumberType, NumberType]
 
@@ -64,6 +65,19 @@ class Point2D:
             return self.__add__((-other.x, -other.y))
         elif isinstance(other, tuple) and len(other) == 2:
             return self.__add__((-other[0], -other[1]))
+        return NotImplemented
+
+    def __mul__(self, other: NumberType) -> Point2D:
+        """Multiply point with a scalar.
+
+        Args:
+            other: Scalar to multiply with.
+
+        Returns:
+            Resulting point.
+        """
+        if isinstance(other, (int, float)):
+            return Point2D(self.x * other, self.y * other)
         return NotImplemented
 
     def __eq__(self, other: Point2D | PointTupleType) -> bool:
