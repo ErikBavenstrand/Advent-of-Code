@@ -27,6 +27,17 @@ NEIGHBORS_TO_SYMBOL: dict[tuple[Point2D, ...], str] = {
 def get_map_directions(
     data: list[str],
 ) -> tuple[Point2D, dict[Point2D, str], dict[str, tuple[Point2D, ...]]]:
+    """Get the map and directions from the input.
+
+    Args:
+        data: Advent of Code challenge input.
+
+    Raises:
+        ValueError: If no start is found.
+
+    Returns:
+        A tuple of the start, the map, and the directions.
+    """
     directions: dict[str, tuple[Point2D, ...]] = {
         symbol: direction for direction, symbol in NEIGHBORS_TO_SYMBOL.items()
     }
@@ -60,6 +71,16 @@ def get_map_directions(
 def flood_fill(
     start: Point2D, map: dict[Point2D, str], directions: dict[str, tuple[Point2D, ...]]
 ) -> dict[Point2D, int]:
+    """Flood fill the map.
+
+    Args:
+        start: The starting point.
+        map: The map.
+        directions: The directions.
+
+    Returns:
+        The cost of each point.
+    """
     Q: Queue[Point2D] = Queue()
     Q.put(start)
     cost: defaultdict[Point2D, int] = defaultdict(lambda: -1)
