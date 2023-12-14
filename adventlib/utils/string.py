@@ -25,19 +25,34 @@ def split_string(
     ]
 
 
-def transpose_list(list_: list[list[Any]] | list[str]) -> list[Any]:
-    """Transpose a list of lists.
-
-    If the list is a list of strings, the result will be a list of strings. Otherwise,
-    the result will be a list of lists.
+def rotate_2d_list(list_: list[T], steps: int = 1, clockwise: bool = False) -> list[T]:
+    """Rotates a 2D list clockwise or counter-clockwise for N steps.
 
     Args:
-        list_: List of lists.
+        list_: 2D list to be rotated.
+        steps: Number of steps to rotate.
+        clockwise: Rotate clockwise if True, counter-clockwise if False.
 
     Returns:
-        Transposed list.
+        Rotated list.
     """
-    if isinstance(list_[0], str):
-        return list(map("".join, zip(*list_)))
-    else:
-        return list(map(list, zip(*list_)))
+
+    def transpose(l: list[Any]) -> list[Any]:
+        return [list(row) for row in zip(*l)]
+
+    def reverse_rows(l: list[Any]) -> list[Any]:
+        return [row[::-1] for row in l]
+
+    def reverse_columns(l: list[Any]) -> list[Any]:
+        return l[::-1]
+
+    matrix = list_.copy()
+    for _ in range(steps % 4):
+        if clockwise:
+            matrix = reverse_rows(transpose(matrix))
+        else:
+            matrix = reverse_columns(transpose(matrix))
+
+    if all(isinstance(row, str) for row in list_):
+        matrix = ["".join(row) for row in matrix]  # type: ignore
+    return matrix

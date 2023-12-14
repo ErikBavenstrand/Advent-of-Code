@@ -3,7 +3,7 @@
 # URL: https://adventofcode.com/2023/day/13
 
 
-from adventlib.utils.string import transpose_list
+from adventlib.utils.string import rotate_2d_list
 
 
 def get_patterns(data: list[str]) -> list[list[str]]:
@@ -106,7 +106,7 @@ def part_a(data: list[str]) -> int | str | None:
             pattern_sum += row_reflection_idx * 100
             continue
 
-        column_reflection_idx = get_reflection_idx(transpose_list(pattern))
+        column_reflection_idx = get_reflection_idx(rotate_2d_list(pattern))
         if column_reflection_idx:
             pattern_sum += column_reflection_idx
             continue
@@ -127,7 +127,7 @@ def part_b(data: list[str]) -> int | str | None:
     pattern_sum = 0
     for pattern in patterns:
         old_row_reflection_idx = get_reflection_idx(pattern)
-        old_column_reflection_idx = get_reflection_idx(transpose_list(pattern))
+        old_column_reflection_idx = get_reflection_idx(rotate_2d_list(pattern))
         for variation in get_pattern_variations(pattern):
             row_reflection_idx = get_reflection_idx(
                 variation, ignore_idx=old_row_reflection_idx
@@ -137,7 +137,7 @@ def part_b(data: list[str]) -> int | str | None:
                 break
 
             column_reflection_idx = get_reflection_idx(
-                transpose_list(variation), ignore_idx=old_column_reflection_idx
+                rotate_2d_list(variation), ignore_idx=old_column_reflection_idx
             )
             if column_reflection_idx:
                 pattern_sum += column_reflection_idx
