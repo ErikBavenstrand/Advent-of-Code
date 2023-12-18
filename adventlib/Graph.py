@@ -1,7 +1,4 @@
-from abc import ABC
-
-
-class Graph(ABC):
+class Graph:
     def __init__(self):
         self._vertexdict: dict = dict()
 
