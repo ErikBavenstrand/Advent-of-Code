@@ -80,6 +80,25 @@ class Point2D:
             return Point2D(self.x * other, self.y * other)
         return NotImplemented
 
+    def __mod__(self, other: NumberType | tuple[NumberType, NumberType]) -> Point2D:
+        """Modulo point with a scalar.
+
+        Args:
+            other: Scalar to modulo with.
+
+        Returns:
+            Resulting point.
+        """
+        if isinstance(other, (int, float)):
+            return Point2D(self.x % other, self.y % other)
+        elif (
+            isinstance(other, tuple)
+            and len(other) == 2
+            and all(isinstance(item, (int, float)) for item in other)
+        ):
+            return Point2D(self.x % other[0], self.y % other[1])
+        return NotImplemented
+
     def __eq__(self, other: Point2D | PointTupleType) -> bool:
         """Check if points are equal.
 
