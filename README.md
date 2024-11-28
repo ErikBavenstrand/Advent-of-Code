@@ -21,7 +21,7 @@
 
 ## About
 
-Solutions to (some) Advent of Code challenges written in `Python`.
+Solutions to (some) Advent of Code challenges written in `Python`
 
 ### Requirements
 
