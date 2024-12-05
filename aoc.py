@@ -8,8 +8,9 @@ import aocd
 import click
 from jinja2 import Environment, FileSystemLoader
 
+from progress import document_solution
+
 BASE_DIR = Path(__file__).resolve().parent
-PROGRESS_MARKDOWN_FILE = BASE_DIR / "PROGRESS.md"
 TEMPLATE_DIR = BASE_DIR / "templates"
 SOLUTION_TEMPLATE_FILE = "solution_template.py.j2"
 TESTS_TEMPLATE_FILE = "tests_template.py.j2"
@@ -67,7 +68,6 @@ def generate(year: int, day: int, author: str) -> None:
         with open(tests_file, "w+") as f:
             f.write(template.render(year=year, day=day))
 
-    update_readme_table()
     click.echo(f"Generated files for Year {year}, Day {day}.")
 
 
@@ -184,61 +184,7 @@ def solve(year: int, day: int, submit: bool) -> None:
     elapsed_b = time() - start_time_b if res_part_b is not None else None
     output_answer("b", res_part_b, elapsed_b)
 
-    document_submission(year, day, elapsed_a, elapsed_b)
-
-
-def update_readme_table():
-    """Update the PROGRESS.md file with missing days."""
-    if not PROGRESS_MARKDOWN_FILE.exists():
-        with open(PROGRESS_MARKDOWN_FILE, "w") as f:
-            f.write("# Advent of Code Progress\n\n")
-            f.write("| Year | Day | Status | Part A | Part B | Submission Time |\n")
-            f.write("| ---- | --- | ------ | ------ | ------ | --------------- |\n")
-
-    with open(PROGRESS_MARKDOWN_FILE, "r+") as f:
-        lines = f.readlines()
-        header, rows = lines[:4], lines[4:]
-        existing_dates = [(year.strip(), day.strip()) for (year, day) in [row.split("|")[1:3] for row in rows]]
-        missing_dates = [
-            f"| {year} | {str(day).zfill(2)} | ❌ | | | |\n"
-            for year in range(2015, CURRENT_YEAR + 1)
-            for day in range(1, 26)
-            if (str(year), str(day).zfill(2)) not in existing_dates and (year < CURRENT_YEAR or day <= CURRENT_DAY)
-        ]
-        rows.extend(missing_dates)
-        rows.sort(reverse=True)
-        f.seek(0)
-        f.truncate()
-        f.writelines(header + rows)
-
-
-def document_submission(year: int, day: int, elapsed_a: float | None, elapsed_b: float | None):
-    """Document the submission in the PROGRESS.md file.
-
-    Args:
-        year: The year of the submission.
-        day: The day of the submission.
-        elapsed_a: The time taken to solve part A.
-        elapsed_b: The time taken to solve part B.
-    """
-    update_readme_table()
-    submission_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    elapsed_a_str = f"{elapsed_a:.6f}s" if elapsed_a is not None else ""
-    elapsed_b_str = f"{elapsed_b:.6f}s" if elapsed_b is not None else ""
-    status_icon = "✅" if elapsed_a is not None and elapsed_b is not None else "🔄"
-    entry = (
-        f"| {year} | {str(day).zfill(2)} | {status_icon} | {elapsed_a_str} | {elapsed_b_str} | {submission_time} |\n"
-    )
-
-    with open(PROGRESS_MARKDOWN_FILE, "r+") as f:
-        lines = f.readlines()
-        header, rows = lines[:4], lines[4:]
-        rows = [row for row in rows if not row.startswith(f"| {year} | {str(day).zfill(2)} |")]
-        rows.append(entry)
-        rows.sort(reverse=True)
-        f.seek(0)
-        f.truncate()
-        f.writelines(header + rows)
+    document_solution(year, day, elapsed_a, elapsed_b)
 
 
 if __name__ == "__main__":
