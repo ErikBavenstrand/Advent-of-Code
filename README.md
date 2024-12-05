@@ -12,7 +12,7 @@
 
 # Advent of Code
 
-[Progress Tracker](https://github.com/ErikBavenstrand/Advent-of-Code/PROGRESS.md)
+[Progress Tracker](https://github.com/ErikBavenstrand/Advent-of-Code/blob/main/PROGRESS.md)
 
 ## Running
 

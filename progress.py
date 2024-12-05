@@ -95,7 +95,7 @@ def update_progress_markdown() -> None:
                 f"| {year} | {day} | {status_str} | {elapsed_a_str} | {elapsed_b_str} | {submission_time} |\n"
             )
 
-        table_rows.append("<br>\n")
+        table_rows.append("| | | | | | |\n")
 
     with PROGRESS_MARKDOWN_FILE.open("w") as f:
         f.write(table_header)
