@@ -13,7 +13,7 @@ from progress import document_solution
 BASE_DIR = Path(__file__).resolve().parent
 TEMPLATE_DIR = BASE_DIR / "templates"
 SOLUTION_TEMPLATE_FILE = "solution_template.py.j2"
-TESTS_TEMPLATE_FILE = "tests_template.py.j2"
+TESTS_TEMPLATE_FILE = "test_template.py.j2"
 
 
 CURRENT_DATE = datetime.date.today()
@@ -50,7 +50,7 @@ def generate(year: int, day: int, author: str) -> None:
     Path(tests_path).mkdir(parents=True, exist_ok=True)
 
     solution_file = day_path / "solution.py"
-    tests_file = day_path / "tests.py"
+    tests_file = day_path / f"test_{year_str}_{day_str}.py"
 
     env = Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
@@ -126,7 +126,7 @@ def manage_test_case(year: int, day: int, part: Literal["a", "b"], case_id: int 
             expected_b = click.prompt("Enter the expected output for part B", type=str)
             output_b_file.write_text(expected_b)
 
-    test_code_path = BASE_DIR / year_str / day_str / "tests.py"
+    test_code_path = BASE_DIR / year_str / day_str / f"test_{year_str}_{day_str}.py"
     with test_code_path.open("a") as f:
         f.write(f"""
 
