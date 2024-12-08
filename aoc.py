@@ -132,8 +132,8 @@ def manage_test_case(year: int, day: int, part: Literal["a", "b"], case_id: int 
 
 def test_part_{part}_{case_id}() -> None:
     {"input_data, expected_a, _" if part == "a" else "input_data, _, expected_b"} = load_test_case({case_id})
-{"    assert str(part_a(input_data.splitlines())) == expected_a" if part == "a" else ""}
-{"    assert str(part_b(input_data.splitlines())) == expected_b" if part == "b" else ""}""")
+{"    assert str(solution.part_a(input_data.splitlines())) == expected_a" if part == "a" else ""}
+{"    assert str(solution.part_b(input_data.splitlines())) == expected_b" if part == "b" else ""}""")
 
     click.echo(f"Test case {case_id} {'modified' if case_id else 'added'} for part {part}, day {day}, year {year}.")
 

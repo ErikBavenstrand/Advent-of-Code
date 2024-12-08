@@ -1,6 +1,7 @@
+import importlib
 from pathlib import Path
 
-from solution import part_a, part_b  # noqa: F401 # type: ignore
+solution = importlib.import_module("2024.03.solution")
 
 TEST_CASES_DIR = Path(__file__).parent / "test_cases"
 
@@ -37,10 +38,10 @@ def load_test_case(case_id: int) -> tuple[str, str, str]:
 
 def test_part_a_1() -> None:
     input_data, expected_a, _ = load_test_case(1)
-    assert str(part_a(input_data.splitlines())) == expected_a
+    assert str(solution.part_a(input_data.splitlines())) == expected_a
 
 
 def test_part_b_2() -> None:
     input_data, _, expected_b = load_test_case(2)
 
-    assert str(part_b(input_data.splitlines())) == expected_b
+    assert str(solution.part_b(input_data.splitlines())) == expected_b

@@ -1,7 +1,7 @@
 import importlib
 from pathlib import Path
 
-solution = importlib.import_module("2024.04.solution")
+solution = importlib.import_module("2024.05.solution")
 
 TEST_CASES_DIR = Path(__file__).parent / "test_cases"
 
