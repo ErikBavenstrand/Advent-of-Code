@@ -29,46 +29,40 @@ def cli():
 
 @cli.command()
 @click.argument("year", type=click.IntRange(2015, CURRENT_YEAR))
-@click.argument("day", type=click.IntRange(1, 25))
 @click.option("-a", "--author", default="Erik Båvenstrand", help="Author of the solution.")
-def generate(year: int, day: int, author: str) -> None:
-    """Generate a new solution file for a specific day of the Advent of Code challenge."""
-    if year == CURRENT_YEAR and day > CURRENT_DAY:
-        raise click.BadParameter(
-            f"Day must be in the range [1, {CURRENT_DAY}] for the current year.",
-            param_hint="day",
-        )
+def generate(year: int, author: str) -> None:
+    """Generate files for a specific year of the Advent of Code challenge."""
+    for day in range(1, 26):
+        year_str = str(year)
+        day_str = str(day).zfill(2)
 
-    year_str = str(year)
-    day_str = str(day).zfill(2)
+        year_path = BASE_DIR / year_str
+        day_path = year_path / day_str
+        tests_path = day_path / "test_cases"
+        Path(year_path).mkdir(parents=True, exist_ok=True)
+        Path(day_path).mkdir(parents=True, exist_ok=True)
+        Path(tests_path).mkdir(parents=True, exist_ok=True)
 
-    year_path = BASE_DIR / year_str
-    day_path = year_path / day_str
-    tests_path = day_path / "test_cases"
-    Path(year_path).mkdir(parents=True, exist_ok=True)
-    Path(day_path).mkdir(parents=True, exist_ok=True)
-    Path(tests_path).mkdir(parents=True, exist_ok=True)
+        solution_file = day_path / "solution.py"
+        tests_file = day_path / f"test_{year_str}_{day_str}.py"
 
-    solution_file = day_path / "solution.py"
-    tests_file = day_path / f"test_{year_str}_{day_str}.py"
+        env = Environment(loader=FileSystemLoader(TEMPLATE_DIR))
 
-    env = Environment(loader=FileSystemLoader(TEMPLATE_DIR))
+        init_file = day_path / "__init__.py"
+        if not init_file.exists():
+            init_file.touch()
 
-    init_file = day_path / "__init__.py"
-    if not init_file.exists():
-        init_file.touch()
+        if not solution_file.exists():
+            template = env.get_template(SOLUTION_TEMPLATE_FILE)
+            with open(solution_file, "w+") as f:
+                f.write(template.render(year=year, day=day, author=author))
 
-    if not solution_file.exists():
-        template = env.get_template(SOLUTION_TEMPLATE_FILE)
-        with open(solution_file, "w+") as f:
-            f.write(template.render(year=year, day=day, author=author))
+        if not tests_file.exists():
+            template = env.get_template(TESTS_TEMPLATE_FILE)
+            with open(tests_file, "w+") as f:
+                f.write(template.render(year=year, day=day))
 
-    if not tests_file.exists():
-        template = env.get_template(TESTS_TEMPLATE_FILE)
-        with open(tests_file, "w+") as f:
-            f.write(template.render(year=year, day=day))
-
-    click.echo(f"Generated files for Year {year}, Day {day}.")
+    click.echo(f"Generated files for Year {year}.")
 
 
 @cli.command()

@@ -1399,10 +1399,10 @@
             "submission_time": "2024-12-08 23:28:19"
         },
         "06": {
-            "status": "\u274c",
-            "elapsed_a": null,
-            "elapsed_b": null,
-            "submission_time": null
+            "status": "\u2705",
+            "elapsed_a": 0.0030121803283691406,
+            "elapsed_b": 5.340525150299072,
+            "submission_time": "2024-12-09 13:47:12"
         },
         "07": {
             "status": "\u274c",
@@ -1411,6 +1411,12 @@
             "submission_time": null
         },
         "08": {
+            "status": "\u274c",
+            "elapsed_a": null,
+            "elapsed_b": null,
+            "submission_time": null
+        },
+        "09": {
             "status": "\u274c",
             "elapsed_a": null,
             "elapsed_b": null,
