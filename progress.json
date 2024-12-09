@@ -1405,10 +1405,10 @@
             "submission_time": "2024-12-09 13:47:12"
         },
         "07": {
-            "status": "\u274c",
-            "elapsed_a": null,
-            "elapsed_b": null,
-            "submission_time": null
+            "status": "\u2705",
+            "elapsed_a": 0.1441969871520996,
+            "elapsed_b": 9.850202083587646,
+            "submission_time": "2024-12-09 14:47:40"
         },
         "08": {
             "status": "\u274c",

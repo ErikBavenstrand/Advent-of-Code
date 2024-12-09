@@ -34,3 +34,14 @@ def load_test_case(case_id: int) -> tuple[str, str, str]:
             expected_b = f.read().strip()
 
     return input_data, expected_a, expected_b
+
+
+def test_part_a_1() -> None:
+    input_data, expected_a, _ = load_test_case(1)
+    assert str(solution.part_a(input_data.splitlines())) == expected_a
+
+
+def test_part_b_1() -> None:
+    input_data, _, expected_b = load_test_case(1)
+
+    assert str(solution.part_b(input_data.splitlines())) == expected_b
